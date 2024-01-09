@@ -1,0 +1,11 @@
+* 	{
+    font-size: 20px;
+font-family: sans-serif;
+}
+.container {
+    display: flex;
+    justify-content: center;
+    border: solid;
+    
+
+}
