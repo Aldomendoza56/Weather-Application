@@ -4,6 +4,7 @@ const locationButton = document.querySelector(".location-btn");
 const currentWeatherDiv = document.querySelector(".current-weather");
 const weatherCardsDiv = document.querySelector(".weather-cards");
 const API_KEY = "84cc13eeaf48f3ddaffeae49b0b42d33"; // this is our API key this is where we are pulling all of our data from
+const savedSearchList = document.getElementById("savedSearchList")
 // an api key grants us access to a ton of data without the key this code would be useless.
 const createWeatherCard = (cityName, weatherItem, index) => {
     if(index === 0) { // HTML for the main weather card
@@ -51,6 +52,7 @@ const getWeatherDetails = (cityName, latitude, longitude) => {
                 weatherCardsDiv.insertAdjacentHTML("beforeend", html);
             }
             saveUserInput(cityName, data.list[0]);
+            displaySavedSearches();
         });        
     }).catch(() => {
         alert("An error occurred while fetching the weather forecast!");
@@ -73,6 +75,36 @@ function saveUserInput(cityName, weatherItem) {
     // Update local storage with the updated searches array
     localStorage.setItem('search', JSON.stringify(searches));
 }
+
+function displaySavedSearches() {
+    // Retrieve existing searches from local storage
+    var searches = JSON.parse(localStorage.getItem('search')) || [];
+
+    // Get the ul element where you want to display the searches
+    var savedSearchList = document.getElementById('savedSearchList');
+
+    // Clear the existing content
+    savedSearchList.innerHTML = '';
+
+    // Iterate through searches and create li elements
+    for (let i = 0; i < Math.min(searches.length, 5); i++) {
+        var search = searches[i];
+        var li = document.createElement('li');
+        
+        // Check if search.weatherItem is defined before accessing its properties
+        if (search.weatherItem && search.weatherItem.main) {
+            li.textContent = `City: ${search.cityName}, Temperature: ${(search.weatherItem.main.temp - 273.15).toFixed(2)}°C`;
+        } else {
+            li.textContent = `City: ${search.cityName}, Temperature: N/A`;
+        }
+
+        // Append li element to the ul
+        savedSearchList.appendChild(li);
+    }
+}
+// Call this function to initially display saved searches on page load
+displaySavedSearches();
+
 
 const getCityCoordinates = () => {
     const cityName = cityInput.value.trim();

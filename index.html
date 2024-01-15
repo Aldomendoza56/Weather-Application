@@ -8,6 +8,8 @@
     <script src="script.js" defer></script>
   </head>
   <body>
+    <!---every single section is divided by header semantics-->
+    <!--this represents the entire dashboard-->
     <h1>Weather Dashboard</h1>
     <div class="container">
       <div class="weather-input">
@@ -16,7 +18,8 @@
         <button class="search-btn">Search</button>
         <div class="separator"></div>
         <button class="location-btn">Use Current Location</button>
-      </div>
+        <ul class="container"  id="savedSearchList"></ul>
+    </div>
       <div class="weather-data">
         <div class="current-weather">
           <div class="details">
@@ -27,6 +30,7 @@
           </div>
         </div>
         <div class="days-forecast">
+            <!---here we have the 5 day forecast-->
           <h2>5-Day Forecast</h2>
           <ul class="weather-cards">
             <li class="card">
@@ -65,5 +69,6 @@
     </div>
     
   </body>
+  <!-- Remember we always out our javascript link at the bottom of our html page-->
   <script src="script.js" defer></script>
 </html>

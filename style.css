@@ -144,6 +144,24 @@ h1 {
     max-width: 70px;
     margin: 5px 0 -12px 0;
   }
+  #savedSearchList {
+    display: flex;
+    justify-content: center;
+    flex: column;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    width: 380px;
+    color: #fff;
+    padding: 10px 8px;
+    list-style: column;
+    /*width: calc(100% / 5);*/
+    background: #f0c653;
+    border-radius: 5px;
+    margin-top: 50px;
+    
+    
+  }
+
   /* Here we are adding our media queries in order to control the sizing of the app that way it is compatible
   with all devices */
   @media (max-width: 1400px) {
