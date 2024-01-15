@@ -1,15 +1,15 @@
-var cityInput = document.querySelector(".city-input");
-var searchButton = document.querySelector(".search-btn");
-var locationButton = document.querySelector(".location-btn");
-var currentWeatherDiv = document.querySelector(".current-weather");
-var weatherCardsDiv = document.querySelector(".weather-cards");
-var API_KEY = "84cc13eeaf48f3ddaffeae49b0b42d33"; // this is our API key this is where we are pulling all of our data from
+const cityInput = document.querySelector(".city-input");
+const searchButton = document.querySelector(".search-btn");
+const locationButton = document.querySelector(".location-btn");
+const currentWeatherDiv = document.querySelector(".current-weather");
+const weatherCardsDiv = document.querySelector(".weather-cards");
+const API_KEY = "84cc13eeaf48f3ddaffeae49b0b42d33"; // this is our API key this is where we are pulling all of our data from
 // an api key grants us access to a ton of data without the key this code would be useless.
-var createWeatherCard = (cityName, weatherItem, index) => {
+const createWeatherCard = (cityName, weatherItem, index) => {
     if(index === 0) { // HTML for the main weather card
         return `<div class="details">
                     <h2>${cityName} (${weatherItem.dt_txt.split(" ")[0]})</h2>
-                    <h6>Temperature: ${(weatherItem.main.temp - 273.15).toFixed(2)}°F</h6>
+                    <h6>Temperature: ${(weatherItem.main.temp - 273.15).toFixed(2)}°C</h6>
                     <h6>Wind: ${weatherItem.wind.speed} M/S</h6>
                     <h6>Humidity: ${weatherItem.main.humidity}%</h6>
                 </div>
@@ -21,7 +21,7 @@ var createWeatherCard = (cityName, weatherItem, index) => {
         return `<li class="card">
                     <h3>(${weatherItem.dt_txt.split(" ")[0]})</h3>
                     <img src="https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}@4x.png" alt="weather-icon">
-                    <h6>Temp: ${(weatherItem.main.temp - 273.15).toFixed(2)}°F</h6>
+                    <h6>Temp: ${(weatherItem.main.temp - 273.15).toFixed(2)}°C</h6>
                     <h6>Wind: ${weatherItem.wind.speed} M/S</h6>
                     <h6>Humidity: ${weatherItem.main.humidity}%</h6>
                 </li>`;
@@ -50,11 +50,30 @@ const getWeatherDetails = (cityName, latitude, longitude) => {
             } else {
                 weatherCardsDiv.insertAdjacentHTML("beforeend", html);
             }
+            saveUserInput(cityName, data.list[0]);
         });        
     }).catch(() => {
         alert("An error occurred while fetching the weather forecast!");
     });
 }
+
+function saveUserInput(cityName, weatherItem) {
+    // Retrieve existing searches from local storage
+    var searches = JSON.parse(localStorage.getItem('search')) || [];
+
+    // Create a new search object
+    var newSearch = {
+        cityName: cityName,
+        weatherItem: weatherItem,
+    };
+
+    // Add the new search to the searches array
+    searches.push(newSearch);
+
+    // Update local storage with the updated searches array
+    localStorage.setItem('search', JSON.stringify(searches));
+}
+
 const getCityCoordinates = () => {
     const cityName = cityInput.value.trim();
     if (cityName === "") return;
@@ -90,6 +109,7 @@ const getUserCoordinates = () => {
             }
         });
 }
+saveUserInput(cityInput, weatherCardsDiv);
 locationButton.addEventListener("click", getUserCoordinates);
 searchButton.addEventListener("click", getCityCoordinates);
 cityInput.addEventListener("keyup", e => e.key === "Enter" && getCityCoordinates());
